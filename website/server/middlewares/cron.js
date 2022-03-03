@@ -59,10 +59,6 @@ async function cronAsync (req, res) {
     }
 
     await checkForActiveCron(user, now);
-    // This replaces the previous user query. Realistically this is the only field that would be
-    // different on the user object we already have. Setting this, so that 'NOT_RUNNING' is only
-    // then saved when cron really is done.
-    user._cronSignature = now.getTime();
 
     const tasks = await Tasks.Task.find({
       userId: user._id,
