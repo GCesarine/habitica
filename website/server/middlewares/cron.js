@@ -35,16 +35,8 @@ async function checkForActiveCron (user, now) {
   }
 }
 
-async function updateLastCron (user, now) {
-  await User.update({
-    _id: user._id,
-  }, {
-    lastCron: now, // setting lastCron now so we don't risk re-running parts of cron if it fails
-  }).exec();
-}
-
 async function unlockUser (user) {
-  await User.update({
+  await User.updateOne({
     _id: user._id,
   }, {
     _cronSignature: 'NOT_RUNNING',
@@ -52,26 +44,25 @@ async function unlockUser (user) {
 }
 
 async function cronAsync (req, res) {
-  let { user } = res.locals;
+  const { user } = res.locals;
   if (!user) return null; // User might not be available when authentication is not mandatory
 
   const { analytics } = res;
   const now = new Date();
 
   try {
-    await checkForActiveCron(user, now);
-
-    user = await User.findOne({ _id: user._id }).exec();
-    res.locals.user = user;
     const { daysMissed, timezoneUtcOffsetFromUserPrefs } = user.daysUserHasMissed(now, req);
-
-    await updateLastCron(user, now);
 
     if (daysMissed <= 0) {
       if (user.isModified()) await user.save();
-      await unlockUser(user);
       return null;
     }
+
+    await checkForActiveCron(user, now);
+    // This replaces the previous user query. Realistically this is the only field that would be
+    // different on the user object we already have. Setting this, so that 'NOT_RUNNING' is only
+    // then saved when cron really is done.
+    user._cronSignature = now.getTime();
 
     const tasks = await Tasks.Task.find({
       userId: user._id,
@@ -136,11 +127,12 @@ async function cronAsync (req, res) {
     await Group.processQuestProgress(user, progress);
 
     // Set _cronSignature, lastCron and auth.timestamps.loggedin to signal end of cron
-    await User.update({
+    await User.updateOne({
       _id: user._id,
     }, {
       $set: {
         _cronSignature: 'NOT_RUNNING',
+        lastCron: now,
         'auth.timestamps.loggedin': now,
       },
     }).exec();
@@ -164,11 +156,7 @@ async function cronAsync (req, res) {
       // For any other error make sure to reset _cronSignature
       // so that it doesn't prevent cron from running
       // at the next request
-      await User.update({
-        _id: user._id,
-      }, {
-        _cronSignature: 'NOT_RUNNING',
-      }).exec();
+      await unlockUser(user);
 
       throw err; // re-throw the original error
     }
