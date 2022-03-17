@@ -18,7 +18,7 @@ const api = {};
  */
 api.geti18nBrowserScript = {
   method: 'GET',
-  url: '/i18n/browser-script',
+  url: '/habitica/api/i18n/browser-script',
   async handler (req, res) {
     if (IS_PROD) {
       res.set({

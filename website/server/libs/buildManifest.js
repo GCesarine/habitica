@@ -36,7 +36,7 @@ function _walk (folder) {
 _walk(BUILD_FOLDER_PATH);
 
 export function getBuildUrl (url) {
-  return `/habitica/${buildFiles[url] || url}`;
+  return `/${buildFiles[url] || url}`;
 }
 
 export function getManifestFiles (page, type) {
