@@ -286,7 +286,7 @@ export default {
       showSpinner: false,
     });
 
-    axios.baseURL = 'http://mediaserver/habitica';
+    axios.defaults.baseURL = 'http://mediaserver/habitica';
 
     axios.interceptors.response.use(response => { // Set up Response interceptors
       // Verify that the user was not updated from another browser/app/client
