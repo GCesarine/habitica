@@ -11,6 +11,7 @@ import StoreModule from './libs/store';
 import './filters/registerGlobals';
 import i18n from './libs/i18n';
 import 'smartbanner.js/dist/smartbanner';
+import axios from 'axios';
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'; // eslint-disable-line no-process-env
 
@@ -32,6 +33,8 @@ Vue.use(BootstrapVue);
 setUpLogging();
 setupAnalytics(); // just create queues for analytics, no scripts loaded at this time
 const store = getStore();
+
+axios.defaults.baseURL = 'http://mediaserver/habitica';
 
 export default new Vue({
   el: '#app',
