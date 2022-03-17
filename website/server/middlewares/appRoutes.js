@@ -51,6 +51,6 @@ const v4RouterOverrides = [
 const v4Router = express.Router(); // eslint-disable-line new-cap
 routes.walkControllers(v4Router, API_V3_CONTROLLERS_PATH, v4RouterOverrides);
 routes.walkControllers(v4Router, API_V4_CONTROLLERS_PATH);
-app.use('/api/v4', v4Router);
+app.use('/habitica/api/v4', v4Router);
 
 export default app;
