@@ -12,6 +12,7 @@ const configFile = path.join(path.resolve(__dirname, '../../config.json'));
 setupNconf(configFile, nconf);
 
 const DEV_BASE_URL = nconf.get('BASE_URL');
+const BASE_PATH = nconf.get('BASE_PATH');
 
 const envVars = [
   'AMAZON_PAYMENTS_SELLER_ID',
@@ -51,8 +52,9 @@ if (enableDuplicatesPlugin) {
   }));
 }
 
+
 module.exports = {
-  assetsDir: 'static',
+  assetsDir: BASE_PATH + '/static',
   configureWebpack: {
     plugins: webpackPlugins,
   },
