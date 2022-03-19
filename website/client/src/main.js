@@ -15,7 +15,7 @@ import 'smartbanner.js/dist/smartbanner';
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'; // eslint-disable-line no-process-env
 
-axios.defaults.baseURL = 'http://mediaserver/habitica';
+axios.defaults.baseURL = 'http://mediaserver/habitiback';
 // Configure Vue global options, see https://vuejs.org/v2/api/#Global-Config
 
 // Enable perf timeline measuring for Vue components in Chrome Dev Tools
