@@ -3,7 +3,7 @@
     <div class="navbar-header">
       <router-link
         class="nav-item"
-        :to="!isUserLoggedIn ? '/static/home' : '/'"
+        :to="!isUserLoggedIn ? '/habitica/static/home' : '/habitica'"
       >
         <div
           v-if="this.$route.name === 'plans'"
