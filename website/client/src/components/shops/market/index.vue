@@ -294,13 +294,13 @@ export default {
     imageURLs () {
       if (!this.currentEvent || !this.currentEvent.season) {
         return {
-          background: 'url(/static/npc/normal/market_background.png)',
-          npc: 'url(/static/npc/normal/market_banner_npc.png)',
+          background: 'url(/habitica/static/npc/normal/market_background.png)',
+          npc: 'url(/habitica/static/npc/normal/market_banner_npc.png)',
         };
       }
       return {
-        background: `url(/static/npc/${this.currentEvent.season}/market_background.png)`,
-        npc: `url(/static/npc/${this.currentEvent.season}/market_banner_npc.png)`,
+        background: `url(/habitica/static/npc/${this.currentEvent.season}/market_background.png)`,
+        npc: `url(/habitica/static/npc/${this.currentEvent.season}/market_banner_npc.png)`,
       };
     },
   },
